@@ -36,6 +36,14 @@ export class HeroService {
       );
   }
 
+  /** PUT: update the hero on the server */
+  updateHero(hero: Hero): Observable<any> {
+    return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
+      tap(_ => this.log(`updated hero id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    );
+  }
+
   // getHero(id: number): Observable<Hero> {
   //   // For now, assume that a hero with the specified `id` always exists.
   //   // Error handling will be added in the next step of the tutorial.
@@ -77,5 +85,9 @@ export class HeroService {
       return of(result as T);
     };
   }
+
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
 }
